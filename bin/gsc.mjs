@@ -12,7 +12,7 @@
  * Search data lags about 2 days; ranges end yesterday.
  */
 import { readFileSync } from "node:fs";
-import { day, fail, googleClient, out, pad, parseArgs, pickSite } from "../lib/core.mjs";
+import { day, fail, googleClient, out, pad, parseArgs, pickSite, readListFile } from "../lib/core.mjs";
 
 const { cmd, rest, flags } = parseArgs();
 if (!cmd) {
@@ -50,9 +50,7 @@ switch (cmd) {
     break;
   }
   case "inspect": {
-    const urls = rest.flatMap((a) => (a.startsWith("@")
-      ? readFileSync(a.slice(1), "utf8").split("\n").map((l) => l.trim()).filter(Boolean)
-      : [a])).map(absolute);
+    const urls = rest.flatMap((a) => (a.startsWith("@") ? readListFile(a) : [a])).map(absolute);
     if (!urls.length) fail("Usage: node bin/gsc.mjs inspect <url|/path|@file>");
     const results = [];
     for (const url of urls) {

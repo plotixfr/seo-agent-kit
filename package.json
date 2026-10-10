@@ -12,6 +12,7 @@
     "ga4": "node bin/ga4.mjs",
     "bing": "node bin/bing.mjs",
     "indexnow": "node bin/indexnow.mjs",
+    "check-url": "node bin/check-url.mjs",
     "pagespeed": "node bin/pagespeed.mjs",
     "visits": "node bin/vercel-visits.mjs"
   }

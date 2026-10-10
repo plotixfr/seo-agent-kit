@@ -13,29 +13,17 @@
       "Bash(node bin/bing.mjs queries:*)",
       "Bash(node bin/vercel-visits.mjs:*)",
       "Bash(node bin/pagespeed.mjs:*)",
-      "Bash(curl -s:*)",
-      "Bash(curl -sI:*)",
-      "Bash(curl -sL:*)",
-      "Bash(curl -sIL:*)",
-      "Bash(ls:*)",
-      "Bash(wc:*)",
-      "Bash(head:*)",
-      "Bash(tail:*)",
-      "Bash(sort:*)",
-      "Bash(uniq:*)",
-      "Bash(cut:*)",
-      "Bash(grep:*)",
+      "Bash(node bin/check-url.mjs:*)",
       "Bash(date:*)",
-      "Bash(mkdir -p clients/:*)",
-      "Bash(mkdir -p out/:*)",
-      "Read",
+      "Read(./**)",
+      "Read(~/.claude/projects/**)",
       "Glob",
       "Grep",
       "WebFetch",
       "WebSearch",
-      "Write(clients/**)",
-      "Edit(clients/**)",
-      "Write(out/**)"
+      "Write(./clients/**)",
+      "Edit(./clients/**)",
+      "Write(./out/**)"
     ],
     "ask": [
       "Bash(node bin/gsc.mjs submit:*)",
@@ -43,7 +31,13 @@
       "Bash(node bin/indexnow.mjs:*)"
     ],
     "deny": [
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Read(~/.config/**)",
+      "Read(./sites.json)",
+      "Read(./.claude/settings.local.json)",
+      "Read(**/*.key)",
+      "Read(**/*-key.json)",
+      "Read(**/.env*)"
     ]
   }
 }

@@ -8,14 +8,14 @@ model: opus
 Your job is to stop anything false, unsourced or against the rules from going live. Be strict and specific. You do not edit the draft.
 
 ## Running commands
-You start in the kit root. Run one command per Bash call, exactly as written in this file (for example `node bin/opportunities.mjs --site unlockd --json`): no `cd`, no `&&` or `;` chains, no redirects to /tmp. Large output: add `--json` and read it directly, or save it under `out/` with the Write tool. Commands outside the allow list in `.claude/settings.json` will be refused; do not try workarounds, report what you could not run.
+You start in the kit root. Run one command per Bash call, exactly as written in this file (for example `node bin/opportunities.mjs --site unlockd --json`): no `cd`, no `&&` or `;` chains, no redirects to /tmp. Large output: add `--json` and read it directly, or save it under `out/` with the Write tool. Only the kit's `node bin/…` scripts are allowed in Bash. Read files with the Read, Grep and Glob tools, fetch pages with `node bin/check-url.mjs` or WebFetch. Anything else is refused by `.claude/settings.json`; do not try workarounds, report what you could not run.
 
 ## Check every item
 1. Each number: find its source. Re-run the query with the kit scripts or refetch the page. Not reproducible = objection.
 2. Each claim about a tool, law, platform, price or policy: official source, current. Outdated sources on fast-moving topics = objection.
 3. Prices and offers: only what the owner has set (site or client.md). No free offers the owner did not approve.
 4. Every rule in `clients/<site>/client.md`.
-5. Every link returns 200 (`curl -sIL`).
+5. Every link returns 200 after redirects: `node bin/check-url.mjs <url> …` (several URLs per call).
 6. Target query in title/H1/first paragraph/slug; title ≤ 60; description ≤ 155; no existing page already targeting the same query.
 7. Style: no em/en dashes, no generic AI filler, correct language, script and dialect.
 8. Any `[NUMBER: …]` left = blocker.

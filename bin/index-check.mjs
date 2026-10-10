@@ -16,7 +16,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { ROOT, fail, googleClient, parseArgs, pickSite, pool, sitemapUrls } from "../lib/core.mjs";
+import { ROOT, fail, googleClient, parseArgs, pickSite, pool, readListFile, sitemapUrls } from "../lib/core.mjs";
 
 const { flags } = parseArgs(["_", ...process.argv.slice(2)]);
 const { cfg, name, site } = pickSite(flags);
@@ -41,7 +41,7 @@ const previous = previousFile ? parseCsv(readFileSync(join(OUT, previousFile), "
 const prevBy = new Map(previous.map((r) => [r.url, r]));
 
 let urls;
-if (flags.urls) urls = readFileSync(flags.urls.replace(/^@/, ""), "utf8").split("\n").map((l) => l.trim()).filter(Boolean);
+if (flags.urls) urls = readListFile(flags.urls);
 else if (flags["only-not-indexed"]) {
   if (!previous.length) fail("No previous run to take not-indexed URLs from. Run once without --only-not-indexed.");
   urls = previous.filter((r) => r.verdict !== "PASS").map((r) => r.url);

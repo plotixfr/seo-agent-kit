@@ -16,6 +16,7 @@ Built and used by [Unlockd](https://unlockd.art) on our own site and client site
 | `bin/ga4.mjs` | Week vs week, reports by source/landing page/country, events, today + realtime |
 | `bin/bing.mjs` | Bing clicks/impressions, crawl and index stats, top queries, sitemap submit |
 | `bin/indexnow.mjs` | Ping Bing, Yandex, Seznam, Naver about changed URLs (whole sitemap or specific paths) |
+| `bin/check-url.mjs` | Read-only page check: redirect chain, status, robots, canonical, hreflang, H1, schema types (GET only, for agents) |
 | `bin/pagespeed.mjs` | Core Web Vitals per URL: real-user field data (CrUX) when Google has it, plus a lab run |
 | `bin/vercel-visits.mjs` | Cookieless visits (Vercel Web Analytics) to see what GA4 cannot: e.g. paid clicks vs real arrivals by country |
 
@@ -47,7 +48,7 @@ node bin/index-check.mjs                # what Google really has
 
 Then open Claude Code in this folder, copy `clients/_template` to `clients/<site>`, fill in `client.md`, and run `/seo-week <site>`.
 
-Permissions: `.claude/settings.json` allows the read-only script commands, asks before anything that pings search engines, and denies `git push`. Claude Code ignores a project's permission rules until you have opened Claude Code interactively in the folder once and accepted the trust prompt, so do that before running headless (`claude -p "/seo-week <site>"`). Add your keyword MCP to `.claude/settings.local.json` (gitignored), for example `{"permissions":{"allow":["mcp__seobility-mcp"],"deny":["mcp__seobility-mcp__start_crawl"]}}`, and deny the tools that change your account.
+Permissions: `.claude/settings.json` lets agents run only the kit's own read-only scripts (no curl, no shell utilities), read and write files only inside the kit, never read key files, asks before anything that pings search engines, and denies `git push`. Claude Code ignores a project's permission rules until you have opened Claude Code interactively in the folder once and accepted the trust prompt, so do that before running headless (`claude -p "/seo-week <site>"`). Add your keyword MCP to `.claude/settings.local.json` (gitignored), for example `{"permissions":{"allow":["mcp__seobility-mcp"],"deny":["mcp__seobility-mcp__start_crawl"]}}`, and deny the tools that change your account.
 
 ## Google access (Search Console + GA4)
 
