@@ -1,0 +1,17 @@
+{
+  "name": "seo-agent-kit",
+  "version": "0.1.0",
+  "description": "Search Console, GA4, Bing and IndexNow from the terminal, plus a team of Claude Code agents that use them. Zero dependencies.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "gsc": "node bin/gsc.mjs",
+    "index-check": "node bin/index-check.mjs",
+    "opportunities": "node bin/opportunities.mjs",
+    "ga4": "node bin/ga4.mjs",
+    "bing": "node bin/bing.mjs",
+    "indexnow": "node bin/indexnow.mjs",
+    "visits": "node bin/vercel-visits.mjs"
+  }
+}
