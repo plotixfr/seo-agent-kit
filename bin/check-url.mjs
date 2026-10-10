@@ -8,7 +8,30 @@
  * --raw prints the first 20 KB of the body instead (robots.txt, sitemap.xml).
  * Relative paths resolve against the site's url from sites.json.
  */
+import { lookup } from "node:dns/promises";
+import { isIP } from "node:net";
 import { fail, out, parseArgs, pickSite } from "../lib/core.mjs";
+
+// Public internet only: refuse loopback, private, link-local (cloud metadata), CGNAT,
+// multicast and reserved ranges, checked on every redirect hop, ports 80/443 only.
+function privateIp(ip) {
+  if (isIP(ip) === 6) {
+    const v = ip.toLowerCase();
+    if (v.startsWith("::ffff:")) return privateIp(v.slice(7));
+    return v === "::" || v === "::1" || /^f[cd]/.test(v) || /^fe[89ab]/.test(v) || v.startsWith("ff") || v.startsWith("64:ff9b") || v.startsWith("2001:db8");
+  }
+  const [a, b] = ip.split(".").map(Number);
+  return a === 0 || a === 10 || a === 127 || a >= 224 || (a === 100 && b >= 64 && b <= 127) || (a === 169 && b === 254)
+    || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 192 && b === 0) || (a === 198 && (b === 18 || b === 19));
+}
+async function assertPublic(u) {
+  const { protocol, hostname, port } = new URL(u);
+  if (!/^https?:$/.test(protocol)) throw new Error("only http(s) URLs");
+  if (port && !["80", "443"].includes(port)) throw new Error("only ports 80 and 443");
+  const host = hostname.replace(/^\[|\]$/g, "");
+  const addrs = isIP(host) ? [{ address: host }] : await lookup(host, { all: true });
+  if (!addrs.length || addrs.some((x) => privateIp(x.address))) throw new Error(`refusing non-public address for ${hostname}`);
+}
 
 const { flags, rest } = parseArgs(["_", ...process.argv.slice(2)]);
 if (!rest.length) fail("Usage: node bin/check-url.mjs <url|/path> … [--raw]");
@@ -16,10 +39,10 @@ const base = rest.every((u) => /^https?:\/\//.test(u)) ? null : pickSite(flags).
 
 async function check(input) {
   let url = new URL(input, base ?? undefined).toString();
-  if (!/^https?:$/.test(new URL(url).protocol)) return { input, error: "only http(s) URLs" };
   const chain = [];
   let res;
   for (let hop = 0; hop < 10; hop++) {
+    await assertPublic(url);
     res = await fetch(url, { method: "GET", redirect: "manual", headers: { "user-agent": "Mozilla/5.0 (compatible; seo-agent-kit)" } });
     chain.push({ status: res.status, url });
     const loc = res.headers.get("location");
