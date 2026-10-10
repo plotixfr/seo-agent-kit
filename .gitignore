@@ -5,3 +5,4 @@ clients/*/
 node_modules/
 *.key
 *-key.json
+.claude/settings.local.json

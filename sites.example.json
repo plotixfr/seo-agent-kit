@@ -1,6 +1,7 @@
 {
   "googleKeyFile": "~/.config/seo-agent-kit/google-key.json",
   "bingKeyFile": "~/.config/seo-agent-kit/bing-key.txt",
+  "pagespeedKeyFile": "~/.config/seo-agent-kit/pagespeed-key.txt",
   "vercelTokenFile": "~/Library/Application Support/com.vercel.cli/auth.json",
   "sites": {
     "example": {

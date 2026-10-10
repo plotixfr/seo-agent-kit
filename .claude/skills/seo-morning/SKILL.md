@@ -11,3 +11,6 @@ For site `$ARGUMENTS`, from the kit root, run and read:
 5. `node bin/index-check.mjs --site <site> --only-not-indexed --limit 50` on Mondays and Thursdays.
 
 Exclude known bot noise (see the seo-analyst agent). Reply in the report language from client.md, in at most 8 lines: "all normal" plus the 3 key numbers, or the problem with evidence and the one action you suggest. Append one line to `clients/<site>/log.jsonl` (type "result").
+
+## Running commands
+You start in the kit root. Run one command per Bash call, exactly as written in this file (for example `node bin/opportunities.mjs --site unlockd --json`): no `cd`, no `&&` or `;` chains, no redirects to /tmp. Large output: add `--json` and read it directly, or save it under `out/` with the Write tool. Commands outside the allow list in `.claude/settings.json` will be refused; do not try workarounds, report what you could not run.

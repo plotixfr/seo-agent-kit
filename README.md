@@ -16,6 +16,7 @@ Built and used by [Unlockd](https://unlockd.art) on our own site and client site
 | `bin/ga4.mjs` | Week vs week, reports by source/landing page/country, events, today + realtime |
 | `bin/bing.mjs` | Bing clicks/impressions, crawl and index stats, top queries, sitemap submit |
 | `bin/indexnow.mjs` | Ping Bing, Yandex, Seznam, Naver about changed URLs (whole sitemap or specific paths) |
+| `bin/pagespeed.mjs` | Core Web Vitals per URL: real-user field data (CrUX) when Google has it, plus a lab run |
 | `bin/vercel-visits.mjs` | Cookieless visits (Vercel Web Analytics) to see what GA4 cannot: e.g. paid clicks vs real arrivals by country |
 
 | Agent (`.claude/agents/`) | Job |
@@ -46,6 +47,8 @@ node bin/index-check.mjs                # what Google really has
 
 Then open Claude Code in this folder, copy `clients/_template` to `clients/<site>`, fill in `client.md`, and run `/seo-week <site>`.
 
+Permissions: `.claude/settings.json` allows the read-only script commands, asks before anything that pings search engines, and denies `git push`. Claude Code ignores a project's permission rules until you have opened Claude Code interactively in the folder once and accepted the trust prompt, so do that before running headless (`claude -p "/seo-week <site>"`). Add your keyword MCP to `.claude/settings.local.json` (gitignored), for example `{"permissions":{"allow":["mcp__seobility-mcp"],"deny":["mcp__seobility-mcp__start_crawl"]}}`, and deny the tools that change your account.
+
 ## Google access (Search Console + GA4)
 
 1. Google Cloud Console → new project → enable **Google Search Console API**, **Google Analytics Data API** and **Google Analytics Admin API**.
@@ -60,6 +63,7 @@ The URL Inspection API allows 2,000 checks per day per property and 600 per minu
 - Bing Webmaster Tools → Settings → API access → generate a key → save it to the file named in `bingKeyFile`.
 - IndexNow: choose a key, serve `https://your-site/<key>.txt` containing the key, put it in `indexnowKey`. Google does not use IndexNow.
 - Vercel Web Analytics: `vercel login`, then set `vercelTokenFile` and the project/team IDs.
+- PageSpeed Insights (Core Web Vitals for the auditor): create a free API key in the same Google Cloud project (enable PageSpeed Insights API) save it in a file and point `"pagespeedKeyFile"` in `sites.json` at it. Without a key the API answers 429.
 
 ## Things we learned the hard way
 

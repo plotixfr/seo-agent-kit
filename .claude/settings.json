@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node bin/gsc.mjs sites:*)",
+      "Bash(node bin/gsc.mjs sitemaps:*)",
+      "Bash(node bin/gsc.mjs inspect:*)",
+      "Bash(node bin/gsc.mjs analytics:*)",
+      "Bash(node bin/index-check.mjs:*)",
+      "Bash(node bin/opportunities.mjs:*)",
+      "Bash(node bin/ga4.mjs:*)",
+      "Bash(node bin/bing.mjs traffic:*)",
+      "Bash(node bin/bing.mjs crawl:*)",
+      "Bash(node bin/bing.mjs queries:*)",
+      "Bash(node bin/vercel-visits.mjs:*)",
+      "Bash(node bin/pagespeed.mjs:*)",
+      "Bash(curl -s:*)",
+      "Bash(curl -sI:*)",
+      "Bash(curl -sL:*)",
+      "Bash(curl -sIL:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(sort:*)",
+      "Bash(uniq:*)",
+      "Bash(cut:*)",
+      "Bash(grep:*)",
+      "Bash(date:*)",
+      "Bash(mkdir -p clients/:*)",
+      "Bash(mkdir -p out/:*)",
+      "Read",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "WebSearch",
+      "Write(clients/**)",
+      "Edit(clients/**)",
+      "Write(out/**)"
+    ],
+    "ask": [
+      "Bash(node bin/gsc.mjs submit:*)",
+      "Bash(node bin/bing.mjs submit-sitemap:*)",
+      "Bash(node bin/indexnow.mjs:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)"
+    ]
+  }
+}

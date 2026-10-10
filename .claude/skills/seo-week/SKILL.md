@@ -36,3 +36,6 @@ Show the plan to the human in their report language and stop. Wait for "ok" per 
 
 ## First week of the month
 Also write `clients/<site>/reports/monthly-YYYY-MM.md` for the client in their language: what changed, what moved (28 d vs 28 d, from changes.csv), what is next. Only measured numbers.
+
+## Running commands
+You start in the kit root. Run one command per Bash call, exactly as written in this file (for example `node bin/opportunities.mjs --site unlockd --json`): no `cd`, no `&&` or `;` chains, no redirects to /tmp. Large output: add `--json` and read it directly, or save it under `out/` with the Write tool. Commands outside the allow list in `.claude/settings.json` will be refused; do not try workarounds, report what you could not run.
