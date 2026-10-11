@@ -20,11 +20,11 @@ if (!cmd) {
 const { cfg, site } = pickSite(flags);
 let key;
 try { key = readFileSync(home(process.env.BING_KEY_FILE ?? cfg.bingKeyFile), "utf8").trim(); } catch { fail("No Bing API key file. See README, \"Bing access\"."); }
-const siteUrl = site.bing ?? `${new URL(site.url).origin}/`;
+const siteUrl = flags["site-url"] ?? site.bing ?? `${new URL(site.url).origin}/`;
 const BASE = "https://ssl.bing.com/webmaster/api.svc/json";
 
 async function call(method, params = {}, body) {
-  const qs = new URLSearchParams({ apikey: key, siteUrl, ...params });
+  const qs = new URLSearchParams({ apikey: key, ...(body ? {} : { siteUrl }), ...params });
   const res = await fetch(`${BASE}/${method}?${qs}`, body
     ? { method: "POST", headers: { "content-type": "application/json; charset=utf-8" }, body: JSON.stringify(body) }
     : {});
@@ -59,7 +59,8 @@ switch (cmd) {
     break;
   }
   case "submit-sitemap": {
-    await call("SubmitFeed", { feedUrl: site.sitemap ?? new URL("/sitemap.xml", site.url).toString() }, {});
+    // POST methods take their arguments in the JSON body, not the query string.
+    await call("SubmitFeed", {}, { siteUrl, feedUrl: site.sitemap ?? new URL("/sitemap.xml", site.url).toString() });
     console.log(`Submitted sitemap for ${siteUrl}`);
     break;
   }
